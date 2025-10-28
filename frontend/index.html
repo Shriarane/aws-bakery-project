@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sweet Escape Bakery - Freshly Baked Goodness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF8F0; /* Creamy background */
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Hero background animation */
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1989&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            animation: kenburns 20s ease-out infinite;
+        }
+        @keyframes kenburns {
+            0%   { transform: scale(1.05) translateX(-2%); }
+            50%  { transform: scale(1) translateX(0); }
+            100% { transform: scale(1.05) translateX(-2%); }
+        }
+        /* Product image hover effect */
+        .product-card img {
+            transition: transform 0.3s ease-in-out;
+        }
+        .product-card:hover img {
+            transform: scale(1.1);
+        }
+        /* Scroll-triggered fade-in animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FFF8F0; }
+        ::-webkit-scrollbar-thumb { background: #E58E80; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D16A5A; }
+    </style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="text-gray-800">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-pink-500" style="font-family: 'Playfair Display', serif;">The Sweet Escape</a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-gray-600 hover:text-pink-500 transition-colors">Home</a>
+                <a href="#menu" class="text-gray-600 hover:text-pink-500 transition-colors">Menu</a>
+                <a href="#about" class="text-gray-600 hover:text-pink-500 transition-colors">About</a>
+                <a href="#order" class="text-gray-600 hover:text-pink-500 transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                 <button id="cart-button" class="relative text-gray-600 hover:text-pink-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <a href="#order" class="hidden sm:inline-block bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-colors shadow-md">Order Now</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="h-screen min-h-[600px] w-full flex items-center justify-center relative overflow-hidden">
+        <div class="hero-bg absolute top-0 left-0 w-full h-full"></div>
+        <div class="absolute top-0 left-0 w-full h-full bg-black/30"></div>
+        <div class="text-center z-10 text-white px-4">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 drop-shadow-lg">Baked with Love</h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto drop-shadow-md">Experience a slice of heaven with our freshly baked cakes, pastries, cookies, and chocolates.</p>
+            <a href="#menu" class="mt-8 inline-block bg-white text-pink-500 px-10 py-3 rounded-full font-semibold text-lg hover:bg-gray-200 transition-transform hover:scale-105 shadow-xl">Explore Our Menu</a>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 md:py-24">
+        <section id="featured" class="fade-in-section">
+            </section>
+
+        <section id="menu" class="mt-24 fade-in-section">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Our Menu</h2>
+                <p class="text-gray-500 mt-2">Choose your sweet delight.</p>
+            </div>
+            <div id="menu-items" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </section>
+
+        <section id="about" class="mt-24 flex flex-col md:flex-row items-center gap-12 bg-white p-12 rounded-2xl shadow-lg fade-in-section">
+             </section>
+
+        <section id="order" class="mt-24 fade-in-section">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Place Your Order</h2>
+                <p class="text-gray-500 mt-2">Let's get your sweet treats ready!</p>
+            </div>
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 border-b pb-4">Your Cart</h3>
+                    <div id="cart-summary" class="space-y-4">
+                        <p class="text-gray-500">Your cart is empty. Add items from the menu!</p>
+                    </div>
+                    <div class="mt-6 border-t pt-4">
+                        <div class="flex justify-between items-center text-xl font-bold">
+                            <span>Total</span>
+                            <span id="cart-total">₹0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="order-form">
+                    <h3 class="text-2xl font-bold mb-6 border-b pb-4">Your Details</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="name" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input type="tel" id="phone" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500">
+                        </div>
+                        <div>
+                            <label for="address" class="block text-sm font-medium text-gray-700">Delivery Address</label>
+                            <textarea id="address" rows="3" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="mt-8 w-full bg-pink-500 text-white py-3 rounded-full text-lg font-semibold hover:bg-pink-600 transition-colors shadow-md disabled:bg-gray-400">Proceed to Payment</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-24">
+        </footer>
+
+    <div id="payment-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center">
+             <div id="modal-content" style="display: none;">
+                <h2 class="text-2xl font-bold mb-4">Confirm Your Order</h2>
+                <p class="text-gray-600 mb-6">Your total amount is:</p>
+                <p id="modal-total" class="text-4xl font-bold text-pink-500 mb-8">₹0.00</p>
+                <button id="confirm-payment-btn" class="w-full bg-green-500 text-white py-3 rounded-full font-semibold hover:bg-green-600 transition-colors">Confirm Payment</button>
+                <button id="cancel-payment-btn" class="mt-3 text-gray-500 hover:text-gray-700">Cancel</button>
+            </div>
+             <div id="success-message" class="hidden">
+                 <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <h2 class="text-2xl font-bold my-4">Payment Successful!</h2>
+                <p class="text-gray-600 mb-6">Thank you for your order. It's on its way!</p>
+                <button id="close-modal-btn" class="w-full bg-pink-500 text-white py-2 rounded-full font-semibold hover:bg-pink-600 transition-colors">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA ---
+        const menuData = [
+            { id: 1, name: 'Velvet Red Cake', category: 'Cakes', price: 550, image: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?q=80&w=1974&auto=format&fit=crop' },
+            { id: 2, name: 'Choco Truffle Cake', category: 'Cakes', price: 650, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1989&auto=format&fit=crop' },
+            { id: 3, name: 'Butterscotch Delight', category: 'Cakes', price: 500, image:"butterscotch.jpeg" },
+            { id: 4, name: 'Almond Croissant', category: 'Pastries', price: 180, image: "almond croissant.jpeg" },
+            { id: 5, name: 'Chocolate Eclair', category: 'Pastries', price: 220, image: "chocolate ec.jpeg" },
+            { id: 6, name: 'Chewy Choco-Chip Cookies (Box of 6)', category: 'Cookies', price: 450, image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1964&auto=format&fit=crop' },
+            { id: 7, name: 'Assorted Artisan Chocolates (Box of 12)', category: 'Chocolates', price: 800, image: "assorted artisian chocolate.jpeg" },
+            { id: 8, name: 'Blueberry Cheesecake Slice', category: 'Pastries', price: 250, image: "bluberry slice.jpeg" },
+            { id: 9, name: 'Oatmeal Raisin Cookies (Box of 6)', category: 'Cookies', price: 400, image:"oat meal raisin.jpeg" },
+        ];
+        let cart = [];
+
+        // --- RENDER FUNCTIONS (Unchanged) ---
+        const menuContainer = document.getElementById('menu-items');
+        const cartSummaryContainer = document.getElementById('cart-summary');
+        const cartCountEl = document.getElementById('cart-count');
+        const cartTotalEl = document.getElementById('cart-total');
+        
+        function renderMenu() {
+            menuContainer.innerHTML = '';
+            menuData.forEach(item => {
+                const menuItemEl = document.createElement('div');
+                menuItemEl.className = 'bg-white p-6 rounded-2xl shadow-lg flex flex-col';
+                menuItemEl.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <div class="flex-grow">
+                        <h3 class="text-2xl font-bold mb-2">${item.name}</h3>
+                        <p class="text-pink-500 font-semibold text-lg mb-4">₹${item.price.toFixed(2)}</p>
+                    </div>
+                    <button data-id="${item.id}" class="add-to-cart-btn mt-4 w-full bg-pink-100 text-pink-700 py-2 rounded-full font-semibold hover:bg-pink-200 transition-colors">Add to Cart</button>
+                `;
+                menuContainer.appendChild(menuItemEl);
+            });
+        }
+        
+        function renderCart() {
+            cartSummaryContainer.innerHTML = '';
+            if (cart.length === 0) {
+                cartSummaryContainer.innerHTML = '<p class="text-gray-500">Your cart is empty. Add items from the menu!</p>';
+            } else {
+                cart.forEach(cartItem => {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'flex justify-between items-center';
+                    itemEl.innerHTML = `
+                        <div>
+                            <p class="font-semibold">${cartItem.name}</p>
+                            <p class="text-sm text-gray-500">Quantity: ${cartItem.quantity}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                           <span class="font-semibold">₹${(cartItem.price * cartItem.quantity).toFixed(2)}</span>
+                           <button data-id="${cartItem.id}" class="remove-from-cart-btn text-red-500 hover:text-red-700">&times;</button>
+                        </div>
+                    `;
+                    cartSummaryContainer.appendChild(itemEl);
+                });
+            }
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartTotalEl.innerText = `₹${total.toFixed(2)}`;
+            cartCountEl.innerText = totalItems;
+        }
+
+        // --- EVENT HANDLERS (Unchanged) ---
+        function addToCart(itemId) {
+            const itemToAdd = menuData.find(item => item.id === itemId);
+            const existingItem = cart.find(item => item.id === itemId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...itemToAdd, quantity: 1 });
+            }
+            renderCart();
+        }
+        function removeFromCart(itemId) {
+            const itemIndex = cart.findIndex(item => item.id === itemId);
+            if (itemIndex > -1) {
+                if (cart[itemIndex].quantity > 1) {
+                    cart[itemIndex].quantity--;
+                } else {
+                    cart.splice(itemIndex, 1);
+                }
+            }
+            renderCart();
+        }
+        menuContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart-btn')) {
+                const itemId = parseInt(e.target.dataset.id);
+                addToCart(itemId);
+            }
+        });
+      // --- EVENT HANDLERS ---
+    // ...(addToCart and removeFromCart functions are above this)...
+
+    menuContainer.addEventListener('click', (e) => {
+        // ... (menuContainer listener code) ...
+    });
+
+    // --- Null check added BEFORE adding the listener ---
+    if (!cartSummaryContainer) {
+        console.error("CRITICAL ERROR: cart-summary element not found in HTML!");
+    } else {
+        // Only add the listener if the element exists
+        cartSummaryContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-from-cart-btn')) {
+                const itemId = parseInt(e.target.dataset.id);
+                // Call the correct function to handle quantity or removal
+                removeFromCart(itemId);
+            }
+        });
+    }
+
+    // --- MODAL & FORM SUBMISSION LOGIC ---
+    // ... (rest of your script) ...
+
+
+        // --- MODAL & FORM SUBMISSION LOGIC (HEAVILY UPDATED) ---
+        const paymentModal = document.getElementById('payment-modal');
+        const orderForm = document.getElementById('order-form');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalContent = document.getElementById('modal-content');
+        const successMessage = document.getElementById('success-message');
+
+        // This is the function that runs AFTER Razorpay is successful
+        async function saveOrderToDatabase() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            const orderData = { name, phone, address, cart, total };
+
+            try {
+                // This is your ORIGINAL fetch request to save the order
+                // YOUR EC2 IP IS NOW FILLED IN
+                const response = await fetch('http://13.211.236.168:3001/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Show success message
+                modalContent.style.display = 'none';
+                successMessage.style.display = 'block';
+                paymentModal.classList.remove('hidden'); // Make sure modal is visible for success message
+
+                cart = [];
+                renderCart();
+                orderForm.reset();
+
+            } catch (error) {
+                console.error('There was a problem saving the order:', error);
+                alert('Payment was successful, but we failed to save your order. Please contact support.');
+            }
+        }
+
+        // This function creates the Razorpay order
+        async function initiatePayment() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items before placing an order.');
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const totalInPaise = total * 100; // Convert to paise
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+
+            try {
+                // 1. Create the Razorpay Order via your backend
+                // YOUR EC2 IP IS NOW FILLED IN
+                const orderResponse = await fetch('http://13.211.236.168:3001/api/payment/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: totalInPaise, currency: 'INR' }),
+                });
+                
+                if (!orderResponse.ok) {
+                    throw new Error('Failed to create payment order.');
+                }
+                
+                const order = await orderResponse.json();
+
+                // 2. Open the Razorpay Checkout Modal
+                const options = {
+                    // ==========================================================
+                    // === PASTE YOUR RAZORPAY TEST KEY ID HERE =================
+                    // ==========================================================
+                    key: 'rzp_test_RYZ2ymYrZBTuQr', // Your Test Key ID
+                    amount: order.amount, // Amount in paise
+                    currency: order.currency,
+                    name: 'The Sweet Escape',
+                    description: 'Bakery Order Payment',
+                    order_id: order.id, // This is the order ID from your backend
+                    
+                    // This function runs AFTER payment is successful
+                    handler: function (response) {
+                        // On successful payment, now we save the order to our database
+                        saveOrderToDatabase();
+                    },
+                    prefill: {
+                        name: name,
+                        contact: phone,
+                    },
+                    theme: {
+                        color: '#E58E80' // Your brand color
+                    }
+                };
+                
+                const rzp1 = new Razorpay(options);
+                
+                rzp1.on('payment.failed', function (response){
+                    alert("Payment failed. Please try again. Error: " + response.error.description);
+                });
+
+                rzp1.open();
+
+            } catch (error) {
+                console.error('Payment initiation failed:', error);
+                alert('Failed to initiate payment. Please try again later.');
+            }
+        }
+        
+        // This now calls the Razorpay flow
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            initiatePayment(); // Call the new payment function
+        });
+        
+        // Close button for the SUCCESS modal
+        closeModalBtn.addEventListener('click', () => {
+            paymentModal.classList.add('hidden');
+        });
+
+        // --- SCROLL ANIMATIONS (Unchanged) ---
+        const faders = document.querySelectorAll('.fade-in-section');
+        const scrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        faders.forEach(fader => {
+            scrollObserver.observe(fader);
+        });
+        
+        // --- HEADER SCROLL EFFECT (Unchanged) ---
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('py-2');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.add('py-4');
+                header.classList.remove('py-2');
+            }
+        });
+
+        // --- INITIALIZE (Unchanged) ---
+        renderMenu();
+        renderCart();
+    });
+    </script>
+</body>
+</html>
