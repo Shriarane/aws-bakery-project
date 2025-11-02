@@ -11,6 +11,11 @@ This project is a fully functional e-commerce website for a fictional bakery, "T
 This diagram illustrates the cloud infrastructure used for this project:
 
 ![Architecture Diagram](architecture.png)
+## Project Demo 🎬
+
+**Note:** The live EC2 backend for this project is currently terminated to save costs. The full functionality, including the Razorpay payment flow, is demonstrated in this video:
+
+![Project Demo GIF](demo.gif)
 
 * **User:** Accesses the website via a web browser.
 * **AWS S3:** Hosts the static frontend files (`index.html`, CSS, JavaScript, images). Provides scalable and durable object storage.
