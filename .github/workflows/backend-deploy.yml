@@ -1,0 +1,73 @@
+name: Deploy Backend to AWS EC2
+
+# Run this workflow only when a push happens to the 'backend' folder
+on:
+  push:
+    branches:
+      - master # Or 'main' if your branch is named main
+    paths:
+      - 'backend/**'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest # Use a standard virtual machine
+    
+    steps:
+    # 1. Check out the repository code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Log in to Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # 3. Build the Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/bakery-backend:latest ./backend
+
+    # 4. Push the Docker image to Docker Hub
+    - name: Push to Docker Hub
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/bakery-backend:latest
+
+  deploy-to-ec2:
+    # This job 'deploy-to-ec2' will only run AFTER 'build-and-push' is successful
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Configure SSH
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+    # 2. SSH into EC2 and run deployment commands
+    - name: Deploy to EC2
+      run: |
+        ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          
+          # 1. Pull the new image from Docker Hub
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bakery-backend:latest
+          
+          # 2. Stop the old running container (if it exists)
+          docker stop bakery-app || true
+          
+          # 3. Remove the old container (if it exists)
+          docker rm bakery-app || true
+          
+          # 4. Run the new container
+          docker run -d \
+            -p 3001:3001 \
+            --name bakery-app \
+            -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+            -e RAZORPAY_KEY_ID="${{ secrets.RAZORPAY_KEY_ID }}" \
+            -e RAZORPAY_KEY_SECRET="${{ secrets.RAZORPAY_KEY_SECRET }}" \
+            ${{ secrets.DOCKER_USERNAME }}/bakery-backend:latest
+        EOF
