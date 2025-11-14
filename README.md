@@ -72,8 +72,19 @@ This diagram illustrates the cloud infrastructure used for this project:
 * **Payment Gateway:** Razorpay SDK
 * **Process Manager:** PM2 (for keeping the Node.js server running on EC2)
 * **Version Control:** Git & GitHub
+**Cloud/DevOps:** AWS (S3, EC2, Security Groups), **Docker**, **GitHub Actions**, Git
 
 ---
+## CI/CD Pipeline 🚀
+
+* **Frontend (Fully Automated):** Any push to the `frontend/` directory (on the `master` branch) triggers a GitHub Action. This workflow automatically configures AWS credentials and syncs the new frontend files to the S3 bucket, updating the live website in seconds.
+
+* **Backend (Fully Automated):** Any push to the `backend/` directory triggers a GitHub Action that:
+    1.  Builds the `Dockerfile` into a new image.
+    2.  Pushes the new Docker image to Docker Hub.
+    3.  Connects to the EC2 server via SSH to pull the new image and restart the container with the updated code.
+
+*(Note: The live EC2 server is currently terminated to conserve cloud costs, but the full CI/CD workflow is defined in `.github/workflows/backend-deploy.yml` and is ready to run.)*
 
 ## Setup Instructions 🛠️
 
@@ -172,10 +183,10 @@ RAZORPAY_KEY_SECRET=YOUR_RAZORPAY_TEST_KEY_SECRET
 
 ## Future Enhancements 🚀
 
-* **Custom Domain:** Use AWS Route 53 to point a custom domain name to the S3 website.
-* **HTTPS/SSL:** Implement CloudFront for S3 and an Application Load Balancer (ALB) with ACM for EC2 to enable secure HTTPS connections.
-* **CI/CD Pipeline:** Set up GitHub Actions to automatically deploy frontend changes to S3 and backend changes to EC2 upon pushing to the repository.
-* **User Authentication:** Add user login/signup functionality.
-* **Order History:** Allow users to view their past orders.
+* **Infrastructure as Code (IaC):** Re-build the entire AWS infrastructure (S3, EC2, Security Groups) using **Terraform** to make the environment 100% reproducible and managed as code.
+* **Networking & Security (HTTPS):** Use **AWS Route 53** for a custom domain, **AWS Certificate Manager (ACM)** for a free SSL certificate, and **Amazon CloudFront (CDN)** to serve the S3 frontend securely and globally.
+* **Serverless Refactor:** Re-architect the backend from a single EC2 instance to a serverless model using **AWS Lambda** and **Amazon API Gateway** to be 100% free-tier compliant and auto-scaling.
+* **User Authentication:** Add user signup/login so customers can view their order history.
+* **Admin Panel:** Create a secure admin page for managing menu items in the database.
 
 ---
